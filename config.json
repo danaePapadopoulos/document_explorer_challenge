@@ -1,7 +1,7 @@
 {
   "ingestion": {
     "max_files": 100,
-    "allowed_formats": ["pdf", "py"]
+    "allowed_formats": ["pdf"]
   },
   "indexing": {
     "model_name": "bge-m3",
