@@ -1,0 +1,21 @@
+{
+  "ingestion": {
+    "max_files": 100,
+    "allowed_formats": ["pdf", "py"]
+  },
+  "indexing": {
+    "model_name": "bge-m3",
+    "vector_type": "dense",
+    "index_type": "IndexFlatL2"
+  },
+  "document_parsing":{
+    "embed_images": "False"
+  },
+  "query_answering": {
+    "model_name": "deepseek-r1:8b",
+    "temperature": 0,
+    "prompt_template": "You are a helpful assistant that answers questions based solely on the provided context from PDF documents. The user has asked a question, and you are provided with the most relevant excerpts extracted from a set of PDF files.\n\nYour job is to synthesize an accurate, comprehensive, and well-structured answer using only the provided context. If the context does not contain enough information to answer the question, clearly state that the answer could not be found in the provided documents.\n\n---\n\nContext:\n{context}\n\n---\n\nUser Question:\n{user_query}\n\n---\n\nInstructions:\n- Only use the information found in the context to answer the question.\n- If multiple documents contribute information, synthesize them cohesively.\n- Do **not** make up or assume information not present in the context.\n- If the question cannot be answered from the context, respond with:  \n  \"Based on the provided documents, there is not enough information to answer this question.\"\n\nAnswer:",
+    "top_k": 5,
+    "supported_models": ["deepseek-r1:8b"]
+  }
+}

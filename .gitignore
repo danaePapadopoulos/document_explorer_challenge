@@ -1,0 +1,23 @@
+# === Byte-compiled / Cache Files ===
+__pycache__/
+
+# === Environment Files & Secrets ===
+.env
+.env.*
+
+# === Dependency Files ===
+requirements.txt
+
+# === Python Scripts for Testing & Dev ===
+src/main_test.py
+src/chunking.py
+test.ipynb
+
+# === Jupyter Notebook Checkpoints ===
+.ipynb_checkpoints/
+
+# === Data & Output ===
+data/
+
+# === OS / Editor / Tooling Files ===
+.DS_Store
