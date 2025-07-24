@@ -1,13 +1,13 @@
 # PDF Question-Answering System
 
-## 👤 Author
-**Danae Papadopoulos**
+## 👤 Danae Papadopoulos
 
 ---
 
 ## 📌 Introduction
 
 This project implements a command-line-based question-answering system where users can input a folder containing up to 100 PDF documents and ask questions related to their contents. The system processes the documents, extracts relevant information, and uses a local LLM to generate the most relevant and context-aware answers.
+
 
 ## 🚀 How to Run
 
@@ -17,6 +17,7 @@ Ollama is used to run the local LLM model.
 
 - Download from: [https://ollama.com/download](https://ollama.com/download)
 - Or install via Homebrew (macOS only):
+
   ```bash
   brew install ollama
   ```
@@ -31,6 +32,7 @@ Run the following command to download the required model:
 
 ### 3. Set Up the Environment
 Create and activate the Python environment using conda:
+
   ```bash
   conda env create -f environment.yml
   conda activate <your_env_name>
@@ -38,10 +40,12 @@ Create and activate the Python environment using conda:
 
 ### 4. Run the CLI Application
 Use the following command to run the project:
+
 ```bash
   python src/main.py --doc_folder <path_to_your_folder>
 ```
   Replace <path_to_your_folder> with the path to the folder containing your PDF documents.
+
 
 ## 🧠 Design Decisions, Technology Choices & Assumptions
 
@@ -55,7 +59,6 @@ The first step is to validate the input folder provided via CLI. We check:
 
 These constraints are defined in the `config.json` under the `"ingestion"` section. Setting this logic in a config file supports future extensibility. For example, the system already supports other formats like `.docx` or `.xlsx`, and these could be enabled simply by updating the config file — though no guarantees are made about the quality of answers for non-PDFs.
 
----
 
 ### 🧹 2. Document Preprocessing
 
@@ -69,7 +72,6 @@ This step is handled using the **Docling** library, which provides robust PDF pa
 
 An interesting (but unused) feature is that Docling also extracts base64 image URIs. While image understanding wasn’t implemented here, a future extension could send these to a **multimodal model** to generate image captions and embed them into the Markdown — giving the LLM better multimodal context. However, due to unknowns in the PDF content (e.g., whether they contain images) and the high runtime cost of image processing, this wasn’t included in the current version.
 
----
 
 ### 🔍 3. RAG-Based Retrieval Strategy
 
@@ -84,7 +86,6 @@ To do this, the system implements a **simple RAG (Retrieval-Augmented Generation
 
 > 🔍 **Note**: Chunking (i.e., splitting documents into smaller parts) is not implemented here. While common in RAG systems, optimal chunking strategies vary (e.g., overlapping chunks, summarizing chunks), and the effectiveness depends heavily on the document types. Since we don’t know the documents ahead of time, this version uses full-document embeddings as a **baseline**. Future iterations could test chunking + evaluate impact using tools like **RAGAS**.
 
----
 
 ### 🧠 Why BGE-M3?
 
@@ -96,7 +97,6 @@ We use the **BGE-M3 embedding model** because:
 
 Another possible enhancement is to **combine sparse and dense retrieval** to improve recall — but this would again need evaluation to ensure it actually improves answer quality.
 
----
 
 ### ⚡ 4. Efficient Similarity Search with FAISS
 
@@ -108,7 +108,6 @@ To perform fast similarity search between query and document embeddings, we use 
 
 Flat indexes are sufficient here because we’re dealing with a small number of documents (max 100), so we avoid the complexity of IVF or PQ-based indexing.
 
----
 
 ### 🤖 5. Answer Generation with DeepSeek
 
@@ -139,12 +138,6 @@ Reasons for this choice:
 
 ---
 
-### Summary
-
-The current implementation provides a **fully local, configurable, and extendable** QA system that works out-of-the-box on folders of PDFs. It serves as a baseline and foundation for more advanced RAG setups, chunking logic, multimodal support, and intelligent reranking.
-
----
-
 ## 🗂️ Code Overview
 
 This section provides a brief description of each main source file and its role in the system.
@@ -163,3 +156,7 @@ Implements a `ChunkEmbedder` class that generates dense embeddings using the **B
 
 ### 📄 `faiss_indexing.py`  
 Defines a `FaissIndex` class that builds and queries FAISS indexes (Flat, IVF, or IVFPQ) for fast vector similarity search. Supports top-k retrieval of the most relevant text chunks based on dense embeddings, with configurable indexing strategies and scoring output.
+
+### Summary
+
+The current implementation provides a **fully local, configurable, and extendable** QA system that works out-of-the-box on folders of PDFs. It serves as a baseline and foundation for more advanced RAG setups, chunking logic, multimodal support, and intelligent reranking.
